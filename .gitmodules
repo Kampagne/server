@@ -1,0 +1,3 @@
+[submodule "submodules/interface"]
+	path = submodules/interface
+	url = https://github.com/Kampagne/interface.git

@@ -34,23 +34,5 @@ impl PlayerQuery {
     async fn get_players(&self, ctx: &async_graphql::Context<'_>,) -> Vec<Player> {
         let conn = ctx.data::<DatabaseConnection>().unwrap();
         Entity::find().all( conn ).await.unwrap()
-
-        // vec![
-        //     Player { id: 0, name: "Susanna".into(), description: "A sexy lady who loves big dick".into() },
-        //     Player { id: 1, name: "Joey".into(), description: "A man fortunate enough to have a big dick".into() },
-        // ]
-        // let players: Vec<Player> = Vec::new();
-
-        // Model::find()
-
-        // players
     }
 }
-
-// GraphQL Object
-// #[derive(SimpleObject)]
-// struct Player {
-//     id: i32,
-//     name: String,
-//     description: String,
-// }

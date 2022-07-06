@@ -28,7 +28,7 @@ pub async fn start_server( state: ServerState ) -> Result<(), std::io::Error> {
         .at( "/graphql", get(api::graphql_playground).post(GraphQL::new( schema )))
         .nest("/", StaticFilesEndpoint::new( "./submodules/interface/dist" ).index_file("index.html") );
 
-    Server::new(TcpListener::bind(("127.0.0.1", port)))
+    Server::new(TcpListener::bind(("0.0.0.0", port)))
         .run(app)
         .await
 }

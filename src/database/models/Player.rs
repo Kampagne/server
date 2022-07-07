@@ -1,9 +1,18 @@
 use sea_orm::entity::prelude::*;
-use async_graphql::{ Object, SimpleObject, InputObjectType, InputObject };
+use sea_orm::entity::Set;
+use async_graphql::{ Object, SimpleObject, InputObject };
+
+// Sea-Orm Input
+#[derive( InputObject )]
+pub struct PlayerInput {
+    pub name: String,
+    pub description: String,
+}
+
 
 // Sea-Orm Model
 #[derive(
-    Clone, Debug, PartialEq, DeriveEntityModel, SimpleObject, InputObject
+    Clone, Debug, PartialEq, DeriveEntityModel, SimpleObject
 )]
 #[graphql(name = "Player")]
 #[sea_orm(table_name = "player")]
@@ -36,9 +45,14 @@ impl PlayerQuery {
         Entity::find().all( conn ).await.unwrap()
     }
 
-    async fn add_player(&self, ctx: &async_graphql::Context<'_>, player_obj: Player) -> bool {
+    async fn add_player(&self, ctx: &async_graphql::Context<'_>, player_obj: PlayerInput) -> Player {
         let conn = ctx.data::<DatabaseConnection>().unwrap();
-        
-        true
+        let j = ActiveModel {
+            name: Set( player_obj.name ),
+            description: Set( player_obj.description ),
+            ..Default::default()
+        };
+
+        j.insert( conn ).await.unwrap()
     }
 }
